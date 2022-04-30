@@ -1,13 +1,14 @@
 #include <stdio.h>
 #include <conio.h>
 #include "canvas.h"
-#include "graph.h"
+#include "draw.h"
 #include "mouse.h"
 
 void main() {
     int mx, my, mc;
     clrscr();
     canvasinit();
+    graphadd();
     mouseshow();
     do {
         mousepos(&mx, &my, &mc);

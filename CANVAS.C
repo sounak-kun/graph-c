@@ -1,11 +1,11 @@
 #include <graphics.h>
 #include "canvas.h"
 
-int canvasinit() {
+void canvasinit() {
     int gdriver = DETECT, gmode;
     initgraph(&gdriver, &gmode, "C:\\TURBOC3\\BGI");
 }
 
-int canvasclose() {
+void canvasclose() {
     closegraph();
 }

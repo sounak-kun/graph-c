@@ -7,7 +7,7 @@ void mouseshow() {
     int86(51, &in, &out);
 }
 
-void hidemouse() {
+void mousehide() {
     in.x.ax = 2;
     int86(51, &in, &out);
 }

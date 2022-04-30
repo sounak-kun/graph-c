@@ -1,6 +1,8 @@
 #ifndef CANVAS
     #define CANVAS
+    #define CANVASX 640
+    #define CANVASY 480
 
-    int canvasinit();
-    int canvasclose();
+    void canvasinit();
+    void canvasclose();
 #endif
