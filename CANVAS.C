@@ -1,3 +1,4 @@
+#include <alloc.h>
 #include <graphics.h>
 #include "canvas.h"
 
@@ -8,4 +9,12 @@ void canvasinit() {
 
 void canvasclose() {
     closegraph();
+}
+
+void canvasclear() {
+    cleardevice();
+}
+
+void canvaspage(int p) {
+    setactivepage(p);
 }

@@ -1,16 +1,9 @@
 #ifndef DRAW
     #define DRAW
+    #include "defs.h"
 
-    typedef struct Point {
-        int x;
-        int y;
-    } Point;
-
-    typedef struct Line {
-        Point a;
-        Point b;
-    } Line;
-
-    void graphadd();
-    Line lineadd(Point, Point);
+    void drawgraph();
+    void drawstatus();
+    void drawcross(Point);
+    Line drawline(Point, Point);
 #endif

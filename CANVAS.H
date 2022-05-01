@@ -5,4 +5,6 @@
 
     void canvasinit();
     void canvasclose();
+    void canvasclear();
+    void canvaspage(int);
 #endif

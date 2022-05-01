@@ -3,17 +3,24 @@
 #include "canvas.h"
 #include "draw.h"
 #include "mouse.h"
+#include "defs.h"
+
+Point currentpos;
 
 void main() {
-    int mx, my, mc;
+    int mousex, mousey, mouseclick;
+    Point temppos;
     clrscr();
     canvasinit();
-    graphadd();
+    drawgraph();
     mouseshow();
     do {
-        mousepos(&mx, &my, &mc);
-        printf("%d,%d", mx, my);
-        gotoxy(1, 1);
+        mousepos(&mousex, &mousey, &mouseclick);
+        temppos = worldpoint(mousex, mousey);
+        if (currentpos.x != temppos.x || currentpos.y != temppos.y) {
+            currentpos = temppos;
+            drawstatus();
+        }
     } while (!kbhit());
     canvasclose();
 }
