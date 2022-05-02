@@ -11,6 +11,7 @@ ShapesNode* drawnshapes = NULL;
 
 void main() {
     int mousex, mousey, mouseclick, mousehold = FALSE;
+    int firstpointer = TRUE, firstdraw = TRUE;
     Point temppos, holdpos, oldpos;
     union Shapes tempshape;
     clrscr();
@@ -27,19 +28,20 @@ void main() {
             oldpos = currentpos;    /* Keep track of the old position */
             currentpos = temppos;   /* Update current position */
 
-            drawpointerxor(oldpos);     /* Remove pointer from old position */
+            if (!firstpointer) {
+                drawpointerxor(oldpos);     /* Remove pointer from old position */
+            } else firstpointer = FALSE;
             drawpointerxor(currentpos); /* Add pointer to new position */
 
             /* Things to update only on position update */
             switch (currentinstrument) {
                 case RULER:
                     if (mousehold) {
-                        canvasclear();
-                        drawgraph();
-                        drawshapes();
-                        drawpointerxor(currentpos);
                         if (mouseclick) {
-                            drawline(holdpos, currentpos);
+                            if (!firstdraw) {
+                                drawlinexor(holdpos, oldpos);   /* Remove old line */
+                            } else firstdraw = FALSE;
+                            drawlinexor(holdpos, currentpos);   /* Add new line */
                         } else {
                             tempshape.line = drawline(holdpos, oldpos);  /* Draw upto old position if mouse is not held anymore */
                             addshape(tempshape, SHAPE_LINE);
@@ -57,6 +59,7 @@ void main() {
                 if (!mousehold && mouseclick) {
                     holdpos = currentpos;
                     mousehold = TRUE;
+                    firstdraw = TRUE;
                 }
                 break;
         }

@@ -41,6 +41,12 @@ Line drawline(Point a, Point b) {
     return l;
 }
 
+void drawlinexor(Point a, Point b) {
+    setwritemode(XOR_PUT);
+    drawline(a, b);
+    setwritemode(COPY_PUT);
+}
+
 void drawshapes() {
     ShapesNode* front = drawnshapes;
     while (front) {

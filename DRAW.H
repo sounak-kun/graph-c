@@ -7,4 +7,5 @@
     void drawshapes();
     void drawpointerxor(Point);
     Line drawline(Point, Point);
+    void drawlinexor(Point, Point);
 #endif
