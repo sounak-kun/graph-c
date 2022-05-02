@@ -1,8 +1,10 @@
 #ifndef DEFS
     #define DEFS
 
-    #define TRUE 1
-    #define FALSE 0
+    typedef enum Bool {
+        FALSE,
+        TRUE
+    } bool;
 
     typedef enum Instruments {
         RULER,

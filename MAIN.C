@@ -16,7 +16,7 @@ void refresh();
 
 void main() {
     int mousex, mousey, mousec, mousehold;
-    char drawruler = FALSE, firstpointer = TRUE, firstruler = TRUE;
+    bool drawruler = FALSE, firstpointer = TRUE, firstruler = TRUE;
     Point temppos, oldpos, holdstartpos, holdendpos;
     union Shapes tempshape;
 
