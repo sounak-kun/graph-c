@@ -5,6 +5,6 @@
     void drawgraph();
     void drawstatus();
     void drawshapes();
-    void drawcross(Point);
+    void drawpointerxor(Point);
     Line drawline(Point, Point);
 #endif

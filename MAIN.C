@@ -26,15 +26,18 @@ void main() {
         if (!eqpoint(currentpos, temppos)) {
             oldpos = currentpos;    /* Keep track of the old position */
             currentpos = temppos;   /* Update current position */
-            canvasclear();
-            drawgraph();
-            drawshapes();
-            drawcross(currentpos);
+
+            drawpointerxor(oldpos);     /* Remove pointer from old position */
+            drawpointerxor(currentpos); /* Add pointer to new position */
 
             /* Things to update only on position update */
             switch (currentinstrument) {
                 case RULER:
                     if (mousehold) {
+                        canvasclear();
+                        drawgraph();
+                        drawshapes();
+                        drawpointerxor(currentpos);
                         if (mouseclick) {
                             drawline(holdpos, currentpos);
                         } else {

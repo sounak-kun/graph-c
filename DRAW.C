@@ -64,10 +64,14 @@ void drawshapes() {
     }
 }
 
-void drawcross(Point p) {
+void drawpointerxor(Point p) {
     int x, y;
-    pointworld(p, &x, &y);
     setcolor(LIGHTRED);
+    setwritemode(XOR_PUT);
+
+    pointworld(p, &x, &y);
     line(x - CROSSSIZE, y, x + CROSSSIZE, y);
     line(x, y - CROSSSIZE, x, y + CROSSSIZE);
+
+    setwritemode(COPY_PUT);
 }
