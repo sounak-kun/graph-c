@@ -1,13 +1,15 @@
 #include <graphics.h>
 #include <stdio.h>
-#include "canvas.h"
-#include "draw.h"
+
 #include "defs.h"
+#include "draw.h"
+#include "canvas.h"
+#include "store.h"
 
 #define STATUSX 80
-#define STATUSY 120
+#define STATUSY 40
 
-#define CROSSSIZE 5
+#define CROSSSIZE 8
 
 void drawgraph() {
     int x, y;
@@ -22,9 +24,9 @@ void drawgraph() {
 
 void drawstatus() {
     char postext[16];
-    setfillstyle(SOLID_FILL, LIGHTGREEN);
+    setfillstyle(SOLID_FILL, BLACK);
     bar(CANVASX - STATUSX, 0, CANVASX, STATUSY);
-    setcolor(BLACK);
+    setcolor(WHITE);
     outtextxy(CANVASX - STATUSX + 10, 8, "Pos:");
     sprintf(postext, "%.1f,%.1f", currentpos.x, currentpos.y);
     outtextxy(CANVASX - STATUSX + 10, 20, postext);

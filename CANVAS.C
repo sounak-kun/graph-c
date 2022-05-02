@@ -14,7 +14,3 @@ void canvasclose() {
 void canvasclear() {
     cleardevice();
 }
-
-void canvaspage(int p) {
-    setactivepage(p);
-}

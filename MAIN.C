@@ -1,81 +1,90 @@
 #include <stdio.h>
 #include <conio.h>
 #include "canvas.h"
+
+#include "defs.h"
 #include "draw.h"
 #include "mouse.h"
-#include "defs.h"
+#include "store.h"
 
 Point currentpos;
 Instruments currentinstrument = RULER;
 ShapesNode* drawnshapes = NULL;
 
+void refresh();
+
 void main() {
-    int mousex, mousey, mouseclick, mousehold = FALSE, righthold = FALSE;
-    int firstpointer = TRUE, firstdraw = TRUE;
-    Point temppos, holdpos, oldpos;
+    int mousex, mousey, mousec, mousehold;
+    char drawruler = FALSE, firstpointer = TRUE, firstruler = TRUE;
+    Point temppos, oldpos, holdstartpos, holdendpos;
     union Shapes tempshape;
-    clrscr();
+
     canvasinit();
     drawgraph();
 
-    /* Main event loop */
+    /* Event loop */
     do {
-        mousepos(&mousex, &mousey, &mouseclick);
+        mousepos(&mousex, &mousey, &mousec);
         temppos = worldpoint(mousex, mousey);
 
-        /* If mouse position updated */
+        /* Things to update only on position update */
         if (!eqpoint(currentpos, temppos)) {
-            oldpos = currentpos;    /* Keep track of the old position */
-            currentpos = temppos;   /* Update current position */
+            oldpos = currentpos;
+            currentpos = temppos;
 
-            if (!firstpointer) {
-                drawpointerxor(oldpos);     /* Remove pointer from old position */
-            } else firstpointer = FALSE;
-            drawpointerxor(currentpos);     /* Add pointer to new position */
-
-            /* Things to update only on position update */
             switch (currentinstrument) {
                 case RULER:
-                    if (mousehold) {
-                        if (mouseclick) {
-                            if (!firstdraw) {
-                                drawlinexor(holdpos, oldpos);   /* Remove old line */
-                            } else firstdraw = FALSE;
-                            drawlinexor(holdpos, currentpos);   /* Add new line */
-                        } else {
-                            tempshape.line = drawline(holdpos, oldpos);  /* Draw upto old position if mouse is not held anymore */
-                            pushshape(tempshape, SHAPE_LINE);
-                            mousehold = FALSE;
-                        }
+                    if (drawruler) {
+                        if (!firstruler) {      /* Don't trigger XOR on first draw */
+                            drawlinexor(holdstartpos, oldpos);  /* Remove old line using XOR */
+                        } else firstruler = FALSE;
+                        drawlinexor(holdstartpos, currentpos);
                     }
                     break;
             }
+
+            if (!firstpointer) {            /* Don't trigger XOR on first run */
+                drawpointerxor(oldpos);     /* Remove old pointer via XOR */
+            } else firstpointer = FALSE;
+            drawpointerxor(currentpos);
+
             drawstatus();
         }
 
-        /* Things to update every frame */
+        /* Things to update on every frame */
         switch (currentinstrument) {
             case RULER:
-                if (!mousehold && mouseclick) {
-                    holdpos = currentpos;
-                    mousehold = TRUE;
-                    firstdraw = TRUE;
+                if (mousec == 1 && !mousehold) {
+                    drawruler = TRUE;
+                    firstruler = TRUE;
+                } else if (mousec == 0 && drawruler) {
+                    tempshape.line = drawline(holdstartpos, currentpos);
+                    pushshape(tempshape, SHAPE_LINE);
+                    refresh();
+                    drawruler = FALSE;
                 }
                 break;
         }
 
-        /* Remove last shape on right click */
-        if (mouseclick == 2) {
-            if (!righthold) {
-                popshape();
-                canvasclear();
-                drawgraph();
-                drawshapes();
-                drawpointerxor(currentpos);
-                drawstatus();
-                righthold = TRUE;
-            }
-        } else righthold = FALSE;
+        /* Undo last shape on right click */
+        if (mousec == 2 && !mousehold) {
+            popshape();
+            refresh();
+        }
+
+        /* Calculate mouse hold */
+        if (mousec && !mousehold) holdstartpos = currentpos;
+        if (!mousec && mousehold) holdendpos = currentpos;
+        mousehold = mousec;
     } while (!kbhit());
+
     canvasclose();
+}
+
+void refresh() {
+    canvasclear();
+    drawgraph();
+    drawshapes();
+    drawpointerxor(currentpos);
+    drawstatus();
 }

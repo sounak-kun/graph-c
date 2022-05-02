@@ -1,5 +1,6 @@
 #include <dos.h>
 #include "mouse.h"
+
 union REGS in, out;
 
 void mouseshow() {
