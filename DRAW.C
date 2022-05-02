@@ -7,6 +7,8 @@
 #define STATUSX 80
 #define STATUSY 120
 
+#define CROSSSIZE 5
+
 void drawgraph() {
     int x, y;
 
@@ -60,4 +62,12 @@ void drawshapes() {
         }
         front = front->next;
     }
+}
+
+void drawcross(Point p) {
+    int x, y;
+    pointworld(p, &x, &y);
+    setcolor(LIGHTRED);
+    line(x - CROSSSIZE, y, x + CROSSSIZE, y);
+    line(x, y - CROSSSIZE, x, y + CROSSSIZE);
 }

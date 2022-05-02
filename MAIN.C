@@ -16,7 +16,6 @@ void main() {
     clrscr();
     canvasinit();
     drawgraph();
-    mouseshow();
 
     /* Main event loop */
     do {
@@ -27,14 +26,15 @@ void main() {
         if (!eqpoint(currentpos, temppos)) {
             oldpos = currentpos;    /* Keep track of the old position */
             currentpos = temppos;   /* Update current position */
+            canvasclear();
+            drawgraph();
+            drawshapes();
+            drawcross(currentpos);
 
             /* Things to update only on position update */
             switch (currentinstrument) {
                 case RULER:
                     if (mousehold) {
-                        canvasclear();
-                        drawgraph();
-                        drawshapes();
                         if (mouseclick) {
                             drawline(holdpos, currentpos);
                         } else {
