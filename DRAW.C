@@ -10,7 +10,7 @@
 void drawgraph() {
     int x, y;
 
-    setcolor(LIGHTGRAY);
+    setcolor(DARKGRAY);
     for (x = 40; x < CANVASX; x += 40) {
         line(x, 0, x, CANVASY);
     }
@@ -18,6 +18,7 @@ void drawgraph() {
         line(0, y, CANVASX, y);
     }
 
+    /*
     setcolor(DARKGRAY);
     for (x = 20; x < CANVASX; x += 40) {
         line(x, 0, x, CANVASY);
@@ -25,13 +26,13 @@ void drawgraph() {
     for (y = 20; y < CANVASY; y += 40) {
         line(0, y, CANVASX, y);
     }
+    */
 }
 
 void drawstatus() {
-    int points[8] = {CANVASX - STATUSX, 0, CANVASX - STATUSX, STATUSY, CANVASX, STATUSY, CANVASX, 0};
     char postext[16];
     setfillstyle(SOLID_FILL, LIGHTGREEN);
-    fillpoly(4, points);
+    bar(CANVASX - STATUSX, 0, CANVASX, STATUSY);
     setcolor(BLACK);
     outtextxy(CANVASX - STATUSX + 10, 8, "Pos:");
     sprintf(postext, "%.1f,%.1f", currentpos.x, currentpos.y);
@@ -40,8 +41,23 @@ void drawstatus() {
 
 Line drawline(Point a, Point b) {
     Line l;
-    l.a = a; l.b = b;
+    int ax, ay, bx, by;
+    pointworld(a, &ax, &ay);
+    pointworld(b, &bx, &by);
     setcolor(WHITE);
-    line(a.x, a.y, b.x, b.y);
+    line(ax, ay, bx, by);
+    l.a = a; l.b = b;
     return l;
+}
+
+void drawshapes() {
+    ShapesNode* front = drawnshapes;
+    while (front) {
+        switch (front->type) {
+            case SHAPE_LINE:
+                drawline(front->shape.line.a, front->shape.line.b);
+                break;
+        }
+        front = front->next;
+    }
 }

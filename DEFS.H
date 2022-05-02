@@ -4,6 +4,12 @@
     #define TRUE 1
     #define FALSE 0
 
+    typedef enum Instruments {
+        RULER,
+        PROTACTOR,
+        COMPASS
+    } Instruments;
+
     typedef struct Point {
         float x;
         float y;
@@ -14,7 +20,27 @@
         Point b;
     } Line;
 
+    union Shapes {
+        Line line;
+    };
+
+    enum ShapeType {
+        SHAPE_LINE
+    };
+
+    typedef struct ShapesNode {
+        union Shapes shape;
+        enum ShapeType type;
+        struct ShapesNode* next;
+    } ShapesNode;
+
     extern Point currentpos;
+    extern Instruments currentinstrument;
+    extern ShapesNode* drawnshapes;
+
+    void addshape(union Shapes, enum ShapeType);
 
     Point worldpoint(int, int);
+    void pointworld(Point, int*, int*);
+    int eqpoint(Point, Point);
 #endif
