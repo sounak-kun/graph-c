@@ -2,8 +2,8 @@
 #include <stdio.h>
 
 #include "defs.h"
-#include "draw.h"
 #include "canvas.h"
+#include "draw.h"
 #include "store.h"
 
 #define STATUSX 80

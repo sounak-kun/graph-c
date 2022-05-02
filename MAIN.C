@@ -1,10 +1,10 @@
 #include <stdio.h>
 #include <conio.h>
-#include "canvas.h"
 
 #include "defs.h"
-#include "draw.h"
+#include "canvas.h"
 #include "mouse.h"
+#include "draw.h"
 #include "store.h"
 
 

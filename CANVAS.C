@@ -1,5 +1,5 @@
-#include <alloc.h>
 #include <graphics.h>
+
 #include "canvas.h"
 
 void canvasinit() {

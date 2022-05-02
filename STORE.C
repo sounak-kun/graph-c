@@ -1,4 +1,5 @@
 #include <stdlib.h>
+
 #include "store.h"
 
 #define LIST_INIT_SIZE 10
