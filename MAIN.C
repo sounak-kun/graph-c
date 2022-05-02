@@ -10,7 +10,7 @@ Instruments currentinstrument = RULER;
 ShapesNode* drawnshapes = NULL;
 
 void main() {
-    int mousex, mousey, mouseclick, mousehold = FALSE;
+    int mousex, mousey, mouseclick, mousehold = FALSE, righthold = FALSE;
     int firstpointer = TRUE, firstdraw = TRUE;
     Point temppos, holdpos, oldpos;
     union Shapes tempshape;
@@ -31,7 +31,7 @@ void main() {
             if (!firstpointer) {
                 drawpointerxor(oldpos);     /* Remove pointer from old position */
             } else firstpointer = FALSE;
-            drawpointerxor(currentpos); /* Add pointer to new position */
+            drawpointerxor(currentpos);     /* Add pointer to new position */
 
             /* Things to update only on position update */
             switch (currentinstrument) {
@@ -44,7 +44,7 @@ void main() {
                             drawlinexor(holdpos, currentpos);   /* Add new line */
                         } else {
                             tempshape.line = drawline(holdpos, oldpos);  /* Draw upto old position if mouse is not held anymore */
-                            addshape(tempshape, SHAPE_LINE);
+                            pushshape(tempshape, SHAPE_LINE);
                             mousehold = FALSE;
                         }
                     }
@@ -63,6 +63,19 @@ void main() {
                 }
                 break;
         }
+
+        /* Remove last shape on right click */
+        if (mouseclick == 2) {
+            if (!righthold) {
+                popshape();
+                canvasclear();
+                drawgraph();
+                drawshapes();
+                drawpointerxor(currentpos);
+                drawstatus();
+                righthold = TRUE;
+            }
+        } else righthold = FALSE;
     } while (!kbhit());
     canvasclose();
 }

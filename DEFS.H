@@ -38,7 +38,8 @@
     extern Instruments currentinstrument;
     extern ShapesNode* drawnshapes;
 
-    void addshape(union Shapes, enum ShapeType);
+    void pushshape(union Shapes, enum ShapeType);
+    void popshape();
 
     Point worldpoint(int, int);
     void pointworld(Point, int*, int*);
