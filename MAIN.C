@@ -7,9 +7,10 @@
 #include "mouse.h"
 #include "store.h"
 
+
 Point currentpos;
 Instruments currentinstrument = RULER;
-ShapesNode* drawnshapes = NULL;
+struct ShapesList shapeslist;
 
 void refresh();
 
@@ -21,6 +22,7 @@ void main() {
 
     canvasinit();
     drawgraph();
+    storeinit();
 
     /* Event loop */
     do {
@@ -59,7 +61,7 @@ void main() {
                     firstruler = TRUE;
                 } else if (mousec == 0 && drawruler) {
                     tempshape.line = drawline(holdstartpos, currentpos);
-                    pushshape(tempshape, SHAPE_LINE);
+                    storepush(tempshape, SHAPE_LINE);
                     refresh();
                     drawruler = FALSE;
                 }
@@ -68,7 +70,7 @@ void main() {
 
         /* Undo last shape on right click */
         if (mousec == 2 && !mousehold) {
-            popshape();
+            storepop();
             refresh();
         }
 

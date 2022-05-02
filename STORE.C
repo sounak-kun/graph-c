@@ -1,36 +1,29 @@
 #include <stdlib.h>
 #include "store.h"
 
-void pushshape(union Shapes sh, enum ShapeType tp) {
-    ShapesNode* front = drawnshapes;
+#define LIST_INIT_SIZE 10
+#define LIST_SIZE_INTERVAL 5
 
-    if (!drawnshapes) {     /* If first node */
-        drawnshapes = (ShapesNode*) malloc(sizeof(ShapesNode));
-        front = drawnshapes;
-    } else {                /* If not first node */
-        while (front->next) front = front->next;
-        front->next = (ShapesNode*) malloc(sizeof(ShapesNode));
-        front = front->next;
-    }
-
-    front->shape = sh;
-    front->type = tp;
-    front->next = NULL;
+void storeinit() {
+    shapeslist.size = LIST_INIT_SIZE;
+    shapeslist.filled = 0;
+    shapeslist.shapes = (union Shapes*) malloc(sizeof(union Shapes) * LIST_INIT_SIZE);
+    shapeslist.type = (enum ShapeType*) malloc(sizeof(enum ShapeType) * LIST_INIT_SIZE);
 }
 
-void popshape() {
-    ShapesNode *first, *second;
-    first = drawnshapes;
-    if (drawnshapes && drawnshapes->next) {
-        while (TRUE) {
-            second = first;
-            first = first->next;
-            if (!first->next) break;
-        }
-        free(first);
-        second->next = NULL;
-    } else if (drawnshapes) {
-        free(drawnshapes);
-        drawnshapes = NULL;
+void storepush(union Shapes sh, enum ShapeType tp) {
+    /* Allocate more memory if needed */
+    if (shapeslist.size == shapeslist.filled) {
+        shapeslist.shapes = (union Shapes*) realloc(shapeslist.shapes, sizeof(union Shapes) * (shapeslist.size + LIST_SIZE_INTERVAL));
+        shapeslist.type = (enum ShapeType*) realloc(shapeslist.type, sizeof(enum ShapeType) * (shapeslist.size + LIST_SIZE_INTERVAL));
+        shapeslist.size += LIST_SIZE_INTERVAL;
     }
+
+    shapeslist.shapes[shapeslist.filled] = sh;
+    shapeslist.type[shapeslist.filled] = tp;
+    shapeslist.filled++;
+}
+
+void storepop() {
+    if (shapeslist.filled) shapeslist.filled--;
 }

@@ -10,14 +10,16 @@
         SHAPE_LINE
     };
 
-    typedef struct ShapesNode {
-        union Shapes shape;
-        enum ShapeType type;
-        struct ShapesNode* next;
-    } ShapesNode;
+    struct ShapesList {
+        int size;
+        int filled;
+        union Shapes* shapes;
+        enum ShapeType* type;
+    };
 
-    extern ShapesNode* drawnshapes;
+    extern struct ShapesList shapeslist;
 
-    void pushshape(union Shapes, enum ShapeType);
-    void popshape();
+    void storeinit();
+    void storepush(union Shapes, enum ShapeType);
+    void storepop();
 #endif

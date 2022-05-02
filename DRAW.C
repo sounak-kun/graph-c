@@ -50,14 +50,13 @@ void drawlinexor(Point a, Point b) {
 }
 
 void drawshapes() {
-    ShapesNode* front = drawnshapes;
-    while (front) {
-        switch (front->type) {
+    int i;
+    for (i = 0; i < shapeslist.filled; i++) {
+        switch (shapeslist.type[i]) {
             case SHAPE_LINE:
-                drawline(front->shape.line.a, front->shape.line.b);
+                drawline(shapeslist.shapes[i].line.a, shapeslist.shapes[i].line.b);
                 break;
         }
-        front = front->next;
     }
 }
 
