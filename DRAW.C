@@ -11,7 +11,6 @@
 
 void drawgraph() {
     int x, y;
-
     setcolor(DARKGRAY);
     for (x = 40; x < CANVASX; x += 40) {
         line(x, 0, x, CANVASY);
@@ -19,16 +18,6 @@ void drawgraph() {
     for (y = 40; y < CANVASY; y += 40) {
         line(0, y, CANVASX, y);
     }
-
-    /*
-    setcolor(DARKGRAY);
-    for (x = 20; x < CANVASX; x += 40) {
-        line(x, 0, x, CANVASY);
-    }
-    for (y = 20; y < CANVASY; y += 40) {
-        line(0, y, CANVASX, y);
-    }
-    */
 }
 
 void drawstatus() {
