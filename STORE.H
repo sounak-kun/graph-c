@@ -4,10 +4,12 @@
 
     union Shapes {
         Line line;
+        Arc arc;
     };
 
     enum ShapeType {
-        SHAPE_LINE
+        SHAPE_LINE,
+        SHAPE_ARC
     };
 
     struct ShapesList {

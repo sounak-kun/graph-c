@@ -1,3 +1,5 @@
+#include <math.h>
+
 #include "defs.h"
 #include "canvas.h"
 
@@ -21,4 +23,17 @@ void pointworld(Point p, int* x, int* y) {
 
 int eqpoint(Point a, Point b) {
     return (a.x == b.x && a.y == b.y);
+}
+
+float distance(Point a, Point b) {
+    return sqrt((a.x - b.x) * (a.x - b.x) + (a.y - b.y) * (a.y - b.y));
+}
+
+int slope(Point a, Point b) {
+    return atan2(b.y - a.y, b.x - a.x) * 180.0/M_PI;
+}
+
+int relativeangle(int current, int old) {
+    int alt = current < 0 ? current + 360 : current - 360;
+    return abs(current - old) < abs(alt - old) ? current : alt;
 }

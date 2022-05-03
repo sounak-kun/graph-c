@@ -49,12 +49,35 @@ void drawlinexor(Point a, Point b) {
     setwritemode(COPY_PUT);
 }
 
+Arc drawarc(Point origin, float radius, int startangle, int endangle) {
+    Arc c;
+    int x, y, temp;
+    pointworld(origin, &x, &y);
+    if (endangle < startangle) {
+        temp = startangle;
+        startangle = endangle;
+        endangle = temp;
+    }
+    setcolor(WHITE);
+    arc(x, y, startangle, endangle, radius * 40.0);
+    c.origin = origin;
+    c.radius = radius;
+    c.startangle = startangle;
+    c.endangle = endangle;
+    return c;
+}
+
 void drawshapes() {
     int i;
     for (i = 0; i < shapeslist.filled; i++) {
         switch (shapeslist.type[i]) {
             case SHAPE_LINE:
                 drawline(shapeslist.shapes[i].line.a, shapeslist.shapes[i].line.b);
+                break;
+
+            case SHAPE_ARC:
+                drawarc(shapeslist.shapes[i].arc.origin, shapeslist.shapes[i].arc.radius,
+                    shapeslist.shapes[i].arc.startangle, shapeslist.shapes[i].arc.endangle);
                 break;
         }
     }
