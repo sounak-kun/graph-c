@@ -10,6 +10,7 @@
 #define STATUSY 40
 
 #define CROSSSIZE 8
+#define POINTSIZE 2
 
 void drawgraph() {
     int x, y;
@@ -93,4 +94,15 @@ void drawpointerxor(Point p) {
     line(x, y - CROSSSIZE, x, y + CROSSSIZE);
 
     setwritemode(COPY_PUT);
+}
+
+void drawpoint(Point p) {
+    int x, y;
+    setcolor(WHITE);
+    setfillstyle(SOLID_FILL, WHITE);
+
+    pointworld(p, &x, &y);
+    pieslice(x, y, 0, 360, POINTSIZE);
+
+    circle(x, y, POINTSIZE + 2);
 }

@@ -77,21 +77,29 @@ void main() {
                 break;
 
             case COMPASS:
+                /* Set compass origin on first click */
                 if (!compassoriginset && mousec == 1 && !mousehold) {
                     compassorigin = currentpos;
                     compassoriginset = TRUE;
-                } else if (compassoriginset && mousec == 1 && !mousehold) {
+                } else if (compassoriginset && mousec == 1 && !mousehold) {     /* Set compass radius and start drawing on hold */
                     drawcompass = TRUE;
                     compassradius = distance(compassorigin, currentpos);
                     compassstartangle = slope(compassorigin, currentpos);
                     compassoldangle = compassstartangle;
-                } else if (compassoriginset && !mousec && drawcompass) {
-                    tempshape.arc = drawarc(compassorigin, compassradius, compassstartangle, slope(compassorigin, currentpos));
+                } else if (compassoriginset && !mousec && drawcompass) {        /* Push arc into store once hold is over */
+                    tempshape.arc = drawarc(compassorigin, compassradius, compassstartangle, compassoldangle);
                     storepush(tempshape, SHAPE_ARC);
                     refresh();
                     drawcompass = FALSE;
-                    compassoriginset = FALSE;
                 };
+                if (compassoriginset) {
+                    drawpoint(compassorigin);
+                    if (mousec == 2 && !mousehold) {
+                        compassoriginset = FALSE;
+                        refresh();
+                        mousec = -1;    /* Lock mouse clicks for the rest of the frame */
+                    }
+                }
                 break;
         }
 
