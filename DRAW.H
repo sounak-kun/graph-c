@@ -1,6 +1,17 @@
 #ifndef DRAW
     #define DRAW
     #include "defs.h"
+    #include "canvas.h"
+
+    #define STATUSX 100
+    #define STATUSY 30
+    #define STATUSGAPS 10
+    #define STATUSCONTROLS 20
+
+    #define STATUS_INDICATOR(n) (STATUSY + STATUSGAPS + (STATUSGAPS + STATUSCONTROLS) * n)
+
+    #define STATUSEDGEX CANVASX - STATUSX
+    #define STATUSEDGEY STATUS_INDICATOR(COMPASS) + STATUSCONTROLS
 
     void drawgraph();
     void drawstatus();

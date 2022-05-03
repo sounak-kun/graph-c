@@ -21,3 +21,10 @@ void mousepos(int* x, int* y, int* c) {
     *y = out.x.dx;
     *c = out.x.bx;
 }
+
+void mousesetpos(int x, int y) {
+    in.x.ax = 4;
+    in.x.cx = x;
+    in.x.dx = y;
+    int86(51, &in, &out);
+}

@@ -6,11 +6,10 @@
 #include "draw.h"
 #include "store.h"
 
-#define STATUSX 80
-#define STATUSY 40
-
 #define CROSSSIZE 8
 #define POINTSIZE 2
+
+void addinstruments(Instruments, char*);
 
 void drawgraph() {
     int x, y;
@@ -25,12 +24,27 @@ void drawgraph() {
 
 void drawstatus() {
     char postext[16];
-    setfillstyle(SOLID_FILL, BLACK);
+    setfillstyle(SOLID_FILL, DARKGRAY);
     bar(CANVASX - STATUSX, 0, CANVASX, STATUSY);
     setcolor(WHITE);
-    outtextxy(CANVASX - STATUSX + 10, 8, "Pos:");
+    outtextxy(CANVASX - STATUSX + 10, 8, "POS:");
     sprintf(postext, "%.1f,%.1f", currentpos.x, currentpos.y);
     outtextxy(CANVASX - STATUSX + 10, 20, postext);
+    addinstruments(RULER, "RULER");
+    addinstruments(PROTACTOR, "PROTACTOR");
+    addinstruments(COMPASS, "COMPASS");
+}
+
+void addinstruments(Instruments ins, char* name) {
+    if (currentinstrument == ins) {
+        setfillstyle(SOLID_FILL, LIGHTGRAY);
+        setcolor(BLACK);
+    } else {
+        setfillstyle(SOLID_FILL, DARKGRAY);
+        setcolor(WHITE);
+    }
+    bar(CANVASX - STATUSX, STATUS_INDICATOR(ins), CANVASX, STATUS_INDICATOR(ins) + STATUSCONTROLS);
+    outtextxy(CANVASX - STATUSX + 10, STATUS_INDICATOR(ins) + 8, name);
 }
 
 Line drawline(Point a, Point b) {
