@@ -34,6 +34,11 @@ int slope(Point a, Point b) {
 }
 
 int relativeangle(int current, int old) {
-    int alt = current < 0 ? current + 360 : current - 360;
-    return abs(current - old) < abs(alt - old) ? current : alt;
+    int minangle = current, mingap = abs(current - old);
+    if (abs(current - old + 360) < mingap) {
+        mingap = abs(current - old + 360);
+        minangle = current + 360;
+    }
+    if (abs(current - old - 360) < mingap) minangle = current - 360;
+    return minangle;
 }
