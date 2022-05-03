@@ -23,13 +23,18 @@ void drawgraph() {
 }
 
 void drawstatus() {
-    char postext[16];
+    char text[16];
     setfillstyle(SOLID_FILL, DARKGRAY);
     bar(CANVASX - STATUSX, 0, CANVASX, STATUSY);
     setcolor(WHITE);
     outtextxy(CANVASX - STATUSX + 10, 8, "POS:");
-    sprintf(postext, "%.1f,%.1f", currentpos.x, currentpos.y);
-    outtextxy(CANVASX - STATUSX + 10, 20, postext);
+    sprintf(text, "%.1f,%.1f", currentpos.x, currentpos.y);
+    outtextxy(CANVASX - STATUSX + 10, 20, text);
+    if (extendstatus) {
+        outtextxy(CANVASX - STATUSX + 10, 32, extendstatustext);
+        sprintf(text, "%.2f", extendstatusnum);
+        outtextxy(CANVASX - STATUSX + 10, 44, text);
+    }
     addinstruments(RULER, "RULER");
     addinstruments(PROTACTOR, "PROTACTOR");
     addinstruments(COMPASS, "COMPASS");

@@ -12,6 +12,9 @@
 Point currentpos;
 Instruments currentinstrument = RULER;
 struct ShapesList shapeslist;
+bool extendstatus = FALSE;
+char* extendstatustext = "";
+float extendstatusnum = 0.0;
 
 void refresh();
 
@@ -40,6 +43,9 @@ void main() {
             switch (currentinstrument) {
                 case RULER:
                     if (drawruler) {
+                        extendstatus = TRUE;
+                        extendstatustext = "LENGTH:";
+                        extendstatusnum = distance(holdstartpos, currentpos);
                         if (!firstruler) {      /* Don't trigger XOR on first draw */
                             drawlinexor(holdstartpos, oldpos);  /* Remove old line using XOR */
                         } else firstruler = FALSE;
@@ -48,6 +54,11 @@ void main() {
                     break;
 
                 case COMPASS:
+                    if (compassoriginset) {
+                        extendstatus = TRUE;
+                        extendstatustext = "RADIUS:";
+                        extendstatusnum = distance(compassorigin, currentpos);
+                    }
                     if (drawcompass) {
                         refresh();
                         drawarc(compassorigin, compassradius, compassstartangle,
@@ -79,6 +90,8 @@ void main() {
             drawstatus();
         }
 
+        if (mousevisible) extendstatus = FALSE; /* Hide extended status if pointer on switcher */
+
         if (mousevisible && CLICK(CLICK_LEFT)) {
             if (mousey > STATUS_INDICATOR(COMPASS)) currentinstrument = COMPASS;
             else if (mousey > STATUS_INDICATOR(PROTACTOR)) currentinstrument = PROTACTOR;
@@ -98,6 +111,7 @@ void main() {
                     storepush(tempshape, SHAPE_LINE);
                     refresh();
                     drawruler = FALSE;
+                    extendstatus = FALSE;
                 }
                 break;
 
@@ -121,6 +135,7 @@ void main() {
                     drawpoint(compassorigin);
                     if (CLICK(CLICK_RIGHT)) {
                         compassoriginset = FALSE;
+                        extendstatus = FALSE;
                         refresh();
                         mousec = -1;    /* Lock mouse clicks for the rest of the frame */
                     }

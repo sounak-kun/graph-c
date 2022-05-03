@@ -4,7 +4,7 @@
     #include "canvas.h"
 
     #define STATUSX 100
-    #define STATUSY 30
+    #define STATUSY 60
     #define STATUSGAPS 10
     #define STATUSCONTROLS 20
 
@@ -12,6 +12,10 @@
 
     #define STATUSEDGEX CANVASX - STATUSX
     #define STATUSEDGEY STATUS_INDICATOR(COMPASS) + STATUSCONTROLS
+
+    extern bool extendstatus;
+    extern char* extendstatustext;
+    extern float extendstatusnum;
 
     void drawgraph();
     void drawstatus();
