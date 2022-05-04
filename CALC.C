@@ -36,7 +36,7 @@ float distance(Point a, Point b) {
 }
 
 int slope(Point a, Point b) {
-    return atan2(b.y - a.y, b.x - a.x) * 180.0/M_PI;
+    return round(atan2(b.y - a.y, b.x - a.x) * 180.0/M_PI);
 }
 
 int relativeangle(int current, int old) {
