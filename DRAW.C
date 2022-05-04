@@ -10,6 +10,8 @@
 #define CROSSSIZE 8
 #define POINTSIZE 2
 
+#define CLAMP(num, min, max) (num < min ? min : num > max ? max : num)
+
 void addinstruments(Instruments, char*);
 
 void drawgraph() {
@@ -70,21 +72,25 @@ void drawlinexor(Point a, Point b) {
     setwritemode(COPY_PUT);
 }
 
-Arc drawarc(Point origin, float radius, int startangle, int endangle) {
+Arc drawarc(Point origin, float radius, int startangle, int relangle) {
     Arc c;
-    int x, y, temp;
-    pointworld(origin, &x, &y);
-    if (endangle < startangle) {
-        temp = startangle;
-        startangle = endangle;
-        endangle = temp;
-    }
-    setcolor(WHITE);
-    arc(x, y, startangle, endangle, radius * 40.0);
+    int x, y, rel, end, temp;
     c.origin = origin;
     c.radius = radius;
     c.startangle = startangle;
-    c.endangle = endangle;
+    c.relangle = relangle;
+
+    rel = CLAMP(relangle, -360, 360);
+    end = startangle + rel;
+    if (end < startangle) {
+        temp = startangle;
+        startangle = end;
+        end = temp;
+    }
+    pointworld(origin, &x, &y);
+    setcolor(WHITE);
+    arc(x, y, startangle, end, radius * 40.0);
+    
     return c;
 }
 
@@ -98,7 +104,7 @@ void drawshapes() {
 
             case SHAPE_ARC:
                 drawarc(shapeslist.shapes[i].arc.origin, shapeslist.shapes[i].arc.radius,
-                    shapeslist.shapes[i].arc.startangle, shapeslist.shapes[i].arc.endangle);
+                    shapeslist.shapes[i].arc.startangle, shapeslist.shapes[i].arc.relangle);
                 break;
         }
     }

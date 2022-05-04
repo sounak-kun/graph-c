@@ -26,7 +26,7 @@
         Point origin;
         float radius;
         float startangle;
-        float endangle;
+        float relangle;
     } Arc;
 
     extern Point currentpos;

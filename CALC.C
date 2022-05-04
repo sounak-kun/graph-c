@@ -10,6 +10,11 @@ float round(float fn) {
     return in; 
 }
 
+int mod(int a, int b) {
+    while (a < 0) a += b;
+    return a % b;
+}
+
 Point worldpoint(int x, int y) {
     Point p;
     p.x = round(x / 4.0) / 10.0;
@@ -35,11 +40,8 @@ int slope(Point a, Point b) {
 }
 
 int relativeangle(int current, int old) {
-    int minangle = current, mingap = abs(current - old);
-    if (abs(current - old + 360) < mingap) {
-        mingap = abs(current - old + 360);
-        minangle = current + 360;
-    }
-    if (abs(current - old - 360) < mingap) minangle = current - 360;
-    return minangle;
+    int r = mod(current, 360) - mod(old, 360);
+    if (r >  180) return r - 360;
+    if (r < -180) return r + 360;
+    return r;
 }

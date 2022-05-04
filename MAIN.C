@@ -20,7 +20,7 @@ float extendstatusnum = 0.0;
 void refresh();
 
 void main() {
-    int mousex, mousey, mousec, mousehold, compassstartangle, compassoldangle;
+    int mousex, mousey, mousec, mousehold, compassstartangle, compassrelangle, relangletemp;
     float compassradius;
     bool drawruler = FALSE, firstpointer = TRUE, firstruler = TRUE, compassoriginset = FALSE, drawcompass = FALSE, mousevisible = FALSE,
         drawprotractor = FALSE, firstprotractor = TRUE;
@@ -73,9 +73,9 @@ void main() {
                         extendstatusnum = distance(compassorigin, currentpos);
                     }
                     if (drawcompass) {
-                        refresh();
-                        drawarc(compassorigin, compassradius, compassstartangle,
-                            compassoldangle = relativeangle(slope(compassorigin, currentpos), compassoldangle));
+                        relangletemp = relativeangle(slope(compassorigin, currentpos), compassstartangle + compassrelangle);
+                        if ((compassrelangle ^ relangletemp) < 0) refresh();      /* Trigger refresh if both have opposite sign */
+                        drawarc(compassorigin, compassradius, compassstartangle, compassrelangle += relangletemp);
                     }
                     break;
             }
@@ -150,9 +150,9 @@ void main() {
                     drawcompass = TRUE;
                     compassradius = distance(compassorigin, currentpos);
                     compassstartangle = slope(compassorigin, currentpos);
-                    compassoldangle = compassstartangle;
+                    compassrelangle = 0;
                 } else if (compassoriginset && !mousec && drawcompass) {        /* Push arc into store once hold is over */
-                    tempshape.arc = drawarc(compassorigin, compassradius, compassstartangle, compassoldangle);
+                    tempshape.arc = drawarc(compassorigin, compassradius, compassstartangle, compassrelangle);
                     storepush(tempshape, SHAPE_ARC);
                     refresh();
                     drawcompass = FALSE;
