@@ -6,6 +6,7 @@
 #include "mouse.h"
 #include "draw.h"
 #include "store.h"
+#include "calc.h"
 
 #define CLICK(n) (##mousec == n && !##mousehold)
 

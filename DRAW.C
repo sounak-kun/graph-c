@@ -5,6 +5,7 @@
 #include "canvas.h"
 #include "draw.h"
 #include "store.h"
+#include "calc.h"
 
 #define CROSSSIZE 8
 #define POINTSIZE 2

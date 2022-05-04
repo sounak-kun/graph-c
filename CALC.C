@@ -2,6 +2,7 @@
 
 #include "defs.h"
 #include "canvas.h"
+#include "calc.h"
 
 float round(float fn) {
     float in = (int) fn;
