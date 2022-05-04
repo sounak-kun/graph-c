@@ -36,7 +36,7 @@ void drawstatus() {
         outtextxy(CANVASX - STATUSX + 10, 44, text);
     }
     addinstruments(RULER, "RULER");
-    addinstruments(PROTACTOR, "PROTACTOR");
+    addinstruments(PROTRACTOR, "PROTRACTOR");
     addinstruments(COMPASS, "COMPASS");
 }
 

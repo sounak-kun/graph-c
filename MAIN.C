@@ -21,7 +21,8 @@ void refresh();
 void main() {
     int mousex, mousey, mousec, mousehold, compassstartangle, compassoldangle;
     float compassradius;
-    bool drawruler = FALSE, firstpointer = TRUE, firstruler = TRUE, compassoriginset = FALSE, drawcompass = FALSE, mousevisible = FALSE;
+    bool drawruler = FALSE, firstpointer = TRUE, firstruler = TRUE, compassoriginset = FALSE, drawcompass = FALSE, mousevisible = FALSE,
+        drawprotractor = FALSE, firstprotractor = TRUE;
     Point temppos, oldpos, holdstartpos, holdendpos, compassorigin;
     union Shapes tempshape;
 
@@ -52,6 +53,17 @@ void main() {
                         drawlinexor(holdstartpos, currentpos);
                     }
                     break;
+
+                case PROTRACTOR:
+                    if (drawprotractor) {
+                        extendstatus = TRUE;
+                        extendstatustext = "ANGLE:";
+                        extendstatusnum = slope(holdstartpos, currentpos);
+                        if (!firstprotractor) {     /* Don't trigger XOR on first draw */
+                            drawlinexor(holdstartpos, oldpos);  /* Remove old line using XOR */
+                        } else firstprotractor = FALSE;
+                        drawlinexor(holdstartpos, currentpos);
+                    }
 
                 case COMPASS:
                     if (compassoriginset) {
@@ -94,7 +106,7 @@ void main() {
 
         if (mousevisible && CLICK(CLICK_LEFT)) {
             if (mousey > STATUS_INDICATOR(COMPASS)) currentinstrument = COMPASS;
-            else if (mousey > STATUS_INDICATOR(PROTACTOR)) currentinstrument = PROTACTOR;
+            else if (mousey > STATUS_INDICATOR(PROTRACTOR)) currentinstrument = PROTRACTOR;
             else if (mousey > STATUS_INDICATOR(RULER)) currentinstrument = RULER;
             refresh();
             mousec = -1;    /* Prevent click actions for the rest of the frame */
@@ -111,6 +123,19 @@ void main() {
                     storepush(tempshape, SHAPE_LINE);
                     refresh();
                     drawruler = FALSE;
+                    extendstatus = FALSE;
+                }
+                break;
+
+            case PROTRACTOR:
+                if (CLICK(CLICK_LEFT)) {
+                    drawprotractor = TRUE;
+                    firstprotractor = TRUE;
+                } else if (!mousec && drawprotractor) {
+                    tempshape.line = drawline(holdstartpos, currentpos);
+                    storepush(tempshape, SHAPE_LINE);
+                    refresh();
+                    drawprotractor = FALSE;
                     extendstatus = FALSE;
                 }
                 break;

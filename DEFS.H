@@ -8,7 +8,7 @@
 
     typedef enum Instruments {
         RULER,
-        PROTACTOR,
+        PROTRACTOR,
         COMPASS
     } Instruments;
 
