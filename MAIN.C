@@ -70,7 +70,11 @@ void main() {
                     if (compassoriginset) {
                         extendstatus = TRUE;
                         extendstatustext = "RADIUS:";
-                        extendstatusnum = distance(compassorigin, currentpos);
+                        if (drawcompass) {
+                            extendstatusnum = compassradius;
+                        } else {
+                            extendstatusnum = distance(compassorigin, currentpos);
+                        }
                     }
                     if (drawcompass) {
                         relangletemp = relativeangle(slope(compassorigin, currentpos), compassstartangle + compassrelangle);
