@@ -36,7 +36,7 @@ float distance(Point a, Point b) {
 }
 
 int slope(Point a, Point b) {
-    return round(atan2(b.y - a.y, b.x - a.x) * 180.0/M_PI);
+    return round(atan2(b.y - a.y, b.x - a.x) * 180.0 / M_PI);
 }
 
 int relativeangle(int current, int old) {
@@ -44,4 +44,20 @@ int relativeangle(int current, int old) {
     if (r >  180) return r - 360;
     if (r < -180) return r + 360;
     return r;
+}
+
+bool approxdiv(float a, float b, float th) {
+    while (a > b) a -= b;
+    return a <= th || a >= b - th;
+}
+
+float roundton(float num, float base) {
+    return round(num / base) * base;
+}
+
+Point vector(float angle, float distance, Point start) {
+    Point q;
+    q.x = start.x + distance * cos(angle / 180.0 * M_PI);
+    q.y = start.y + distance * sin(angle / 180.0 * M_PI);
+    return q;
 }

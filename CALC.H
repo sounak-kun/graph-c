@@ -8,4 +8,7 @@
     float distance(Point, Point);
     int slope(Point, Point);
     int relativeangle(int, int);
+    bool approxdiv(float, float, float);
+    float roundton(float, float);
+    Point vector(float, float, Point);
 #endif

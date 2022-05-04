@@ -8,6 +8,13 @@
 #include "store.h"
 #include "calc.h"
 
+#define RULERNATURALINT 1
+#define RULERATTR 0.15
+#define PROTRACTORNATURALINT 15
+#define PROTRACTORATTR 2
+#define COMPASSNATURALINT 1
+#define COMPASSATTR 0.2
+
 #define CLICK(n) (##mousec == n && !##mousehold)
 
 Point currentpos;
@@ -21,10 +28,10 @@ void refresh();
 
 void main() {
     int mousex, mousey, mousec, mousehold, compassstartangle, compassrelangle, relangletemp;
-    float compassradius;
+    float compassradius, attrval;
     bool drawruler = FALSE, firstpointer = TRUE, firstruler = TRUE, compassoriginset = FALSE, drawcompass = FALSE, mousevisible = FALSE,
         drawprotractor = FALSE, firstprotractor = TRUE;
-    Point temppos, oldpos, holdstartpos, holdendpos, compassorigin;
+    Point temppos, oldpos, holdstartpos, holdendpos, compassorigin, attrpoint, drawoldpos;
     union Shapes tempshape;
 
     canvasinit();
@@ -47,11 +54,15 @@ void main() {
                     if (drawruler) {
                         extendstatus = TRUE;
                         extendstatustext = "LENGTH:";
-                        extendstatusnum = distance(holdstartpos, currentpos);
+                        attrval = distance(holdstartpos, currentpos);
+                        if (approxdiv(attrval, RULERNATURALINT, RULERATTR)) attrval = roundton(attrval, RULERNATURALINT);
+                        extendstatusnum = attrval;
+                        attrpoint = vector(slope(holdstartpos, currentpos), attrval, holdstartpos);
                         if (!firstruler) {      /* Don't trigger XOR on first draw */
-                            drawlinexor(holdstartpos, oldpos);  /* Remove old line using XOR */
+                            drawlinexor(holdstartpos, drawoldpos);  /* Remove old line using XOR */
                         } else firstruler = FALSE;
-                        drawlinexor(holdstartpos, currentpos);
+                        drawlinexor(holdstartpos, attrpoint);
+                        drawoldpos = attrpoint;
                     }
                     break;
 
@@ -59,11 +70,15 @@ void main() {
                     if (drawprotractor) {
                         extendstatus = TRUE;
                         extendstatustext = "ANGLE:";
-                        extendstatusnum = slope(holdstartpos, currentpos);
+                        attrval = slope(holdstartpos, currentpos);
+                        if (approxdiv(attrval, PROTRACTORNATURALINT, PROTRACTORATTR)) attrval = roundton(attrval, PROTRACTORNATURALINT);
+                        extendstatusnum = attrval;
+                        attrpoint = vector(attrval, distance(holdstartpos, currentpos), holdstartpos);
                         if (!firstprotractor) {     /* Don't trigger XOR on first draw */
-                            drawlinexor(holdstartpos, oldpos);  /* Remove old line using XOR */
+                            drawlinexor(holdstartpos, drawoldpos);  /* Remove old line using XOR */
                         } else firstprotractor = FALSE;
-                        drawlinexor(holdstartpos, currentpos);
+                        drawlinexor(holdstartpos, attrpoint);
+                        drawoldpos = attrpoint;
                     }
 
                 case COMPASS:
@@ -73,7 +88,9 @@ void main() {
                         if (drawcompass) {
                             extendstatusnum = compassradius;
                         } else {
-                            extendstatusnum = distance(compassorigin, currentpos);
+                            attrval = distance(compassorigin, currentpos);
+                            if (approxdiv(attrval, COMPASSNATURALINT, COMPASSATTR)) attrval = roundton(attrval, COMPASSNATURALINT);
+                            extendstatusnum = attrval;
                         }
                     }
                     if (drawcompass) {
@@ -128,7 +145,7 @@ void main() {
                     drawruler = TRUE;
                     firstruler = TRUE;
                 } else if (!mousec && drawruler) {
-                    tempshape.line = drawline(holdstartpos, currentpos);
+                    tempshape.line = drawline(holdstartpos, drawoldpos);
                     storepush(tempshape, SHAPE_LINE);
                     refresh();
                     drawruler = FALSE;
@@ -141,7 +158,7 @@ void main() {
                     drawprotractor = TRUE;
                     firstprotractor = TRUE;
                 } else if (!mousec && drawprotractor) {
-                    tempshape.line = drawline(holdstartpos, currentpos);
+                    tempshape.line = drawline(holdstartpos, drawoldpos);
                     storepush(tempshape, SHAPE_LINE);
                     refresh();
                     drawprotractor = FALSE;
@@ -156,7 +173,9 @@ void main() {
                     compassoriginset = TRUE;
                 } else if (compassoriginset && CLICK(CLICK_LEFT)) {     /* Set compass radius and start drawing on hold */
                     drawcompass = TRUE;
-                    compassradius = distance(compassorigin, currentpos);
+                    attrval = distance(compassorigin, currentpos);
+                    if (approxdiv(attrval, COMPASSNATURALINT, COMPASSATTR)) attrval = roundton(attrval, COMPASSNATURALINT);
+                    compassradius = attrval;
                     compassstartangle = slope(compassorigin, currentpos);
                     compassrelangle = 0;
                 } else if (compassoriginset && !mousec && drawcompass) {        /* Push arc into store once hold is over */
