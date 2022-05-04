@@ -78,7 +78,11 @@ void main() {
                     }
                     if (drawcompass) {
                         relangletemp = relativeangle(slope(compassorigin, currentpos), compassstartangle + compassrelangle);
-                        if ((compassrelangle ^ relangletemp) < 0) refresh();      /* Trigger refresh if both have opposite sign */
+                        if ((compassrelangle ^ relangletemp) < 0) {     /* Trigger refresh if both have opposite sign */
+                            refresh();
+                            firstpointer = TRUE;                        /* Prevent old position overlap */
+                            drawpointerxor(currentpos);                 /* Prevent current position from being empty */
+                        }
                         drawarc(compassorigin, compassradius, compassstartangle, compassrelangle += relangletemp);
                     }
                     break;
