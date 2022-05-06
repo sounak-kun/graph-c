@@ -5,7 +5,7 @@
 #include "calc.h"
 
 float round(float fn) {
-    float in = (int) fn;
+    float in = floor(fn);
     if ((fn - in) > 0.5) return in + 1.0;
     return in; 
 }
@@ -13,6 +13,11 @@ float round(float fn) {
 int mod(int a, int b) {
     while (a < 0) a += b;
     return a % b;
+}
+
+float floatmod(float a, float b) {
+    while (a < 0) a += b;
+    return fmod(a ,b);
 }
 
 Point worldpoint(int x, int y) {
@@ -47,7 +52,7 @@ int relativeangle(int current, int old) {
 }
 
 bool approxdiv(float a, float b, float th) {
-    while (a > b) a -= b;
+    a = floatmod(a, b);
     return a <= th || a >= b - th;
 }
 
