@@ -74,14 +74,13 @@ void drawlinexor(Point a, Point b) {
 
 Arc drawarc(Point origin, float radius, int startangle, int relangle) {
     Arc c;
-    int x, y, rel, end, temp;
+    int x, y, end, temp;
     c.origin = origin;
     c.radius = radius;
     c.startangle = startangle;
-    c.relangle = relangle;
+    c.relangle = CLAMP(relangle, -360, 360);
 
-    rel = CLAMP(relangle, -360, 360);
-    end = startangle + rel;
+    end = startangle + c.relangle;
     if (end < startangle) {
         temp = startangle;
         startangle = end;

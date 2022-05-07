@@ -20,6 +20,7 @@
 Point currentpos;
 Instruments currentinstrument = RULER;
 struct ShapesList shapeslist;
+struct Intersections intersections;
 bool extendstatus = FALSE;
 char* extendstatustext = "";
 float extendstatusnum = 0.0;
@@ -27,8 +28,8 @@ float extendstatusnum = 0.0;
 void refresh();
 
 void main() {
-    int mousex, mousey, mousec, mousehold, compassstartangle, compassrelangle, relangletemp;
-    float compassradius, attrval;
+    int mousex, mousey, mousec, mousehold;
+    float compassradius, compassstartangle, compassrelangle, relangletemp, attrval;
     bool drawruler = FALSE, firstpointer = TRUE, firstruler = TRUE, compassoriginset = FALSE, drawcompass = FALSE, mousevisible = FALSE,
         drawprotractor = FALSE, firstprotractor = TRUE;
     Point temppos, oldpos, holdstartpos, holdendpos, compassorigin, attrpoint, drawoldpos;
@@ -95,7 +96,7 @@ void main() {
                     }
                     if (drawcompass) {
                         relangletemp = relativeangle(slope(compassorigin, currentpos), compassstartangle + compassrelangle);
-                        if ((compassrelangle ^ relangletemp) < 0) {     /* Trigger refresh if both have opposite sign */
+                        if ((compassrelangle * relangletemp) < 0) {     /* Trigger refresh if both have opposite sign */
                             refresh();
                             firstpointer = TRUE;                        /* Prevent old position overlap */
                             drawpointerxor(currentpos);                 /* Prevent current position from being empty */
